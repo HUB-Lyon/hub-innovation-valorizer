@@ -1,0 +1,17 @@
+[
+  {
+    "id": 0,
+    "email": "theo1.marinho@epitech.eu",
+    "isAdmin": true
+  },
+  {
+    "id": 1,
+    "email": "alan1.schnegg@epitech.eu",
+    "isAdmin": false
+  },
+  {
+    "id": 2,
+    "email": "julien1.calenge@epitech.eu",
+    "isAdmin": false
+  }
+]

@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://use.typekit.net/ryc1kmc.css");
+
+html, body, #root, main {
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+* {
+  font-family: "montserrat";
+  scroll-behavior: smooth;
+}
+
+.font-title {
+  font-family: "itc-avant-garde-gothic-pro";
+}
+
+/* Firefox */
+* {
+  scrollbar-width: 1px;
+}
+
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
