@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+  server:
+    build: ./backend
+    depends_on:
+      - db
+    ports:
+      - "5000:3000"
+    volumes:
+      - ./data/server_logs:/logs
+    environment:
+      - PG=db:5432
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
