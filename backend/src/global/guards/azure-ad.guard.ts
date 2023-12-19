@@ -1,19 +1,17 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy, AuthGuard } from '@nestjs/passport';
 import { BearerStrategy } from 'passport-azure-ad';
-
-const clientID = 'ec27360f-3bd6-44d8-b80e-7150e6492462';
-const tenantID = '901cb4ca-b862-4029-9306-e5cd0f6d9f86';
 
 @Injectable()
 export class AzureADStrategy extends PassportStrategy(
   BearerStrategy,
   'azure-ad',
 ) {
-  constructor() {
+  constructor(private config: ConfigService) {
     super({
-      identityMetadata: `https://login.microsoftonline.com/${tenantID}/v2.0/.well-known/openid-configuration`,
-      clientID,
+      identityMetadata: `https://login.microsoftonline.com/${config.get('AZURE_TENANTID')}/v2.0/.well-known/openid-configuration`,
+      clientID: config.get('AZURE_CLIENTID'),
     });
   }
 

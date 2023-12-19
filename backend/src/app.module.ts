@@ -9,7 +9,10 @@ import { AppService } from './app.service';
 
 @Global()
 @Module({
-  imports: [ConfigModule.forRoot(), PassportModule],
+  imports: [
+    ConfigModule.forRoot(),
+    PassportModule
+  ],
   controllers: [AppController],
   providers: [AppService, AzureADStrategy],
 })

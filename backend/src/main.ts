@@ -14,6 +14,7 @@ import {
 import { AzureADGuard } from './global/guards/azure-ad.guard';
 
 export const rootPath: string = process.cwd();
+
 function initOpenAPI(
   app: INestApplication,
   configService: ConfigService,
