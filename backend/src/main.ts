@@ -39,11 +39,12 @@ async function bootstrap() {
   const app: INestApplication = await NestFactory.create(AppModule, {
     cors: true,
   });
+  const reflector: Reflector = app.get(Reflector);
 
   app
     .setGlobalPrefix('')
     .useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }))
-    .useGlobalGuards(new AzureADGuard())
+    .useGlobalGuards(new AzureADGuard(reflector))
     .use(
       compression(),
       helmet({
