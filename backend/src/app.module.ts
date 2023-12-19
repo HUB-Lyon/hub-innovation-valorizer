@@ -6,12 +6,14 @@ import { PassportModule } from '@nestjs/passport';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ProjectsModule } from './projects/projects.module';
 
 @Global()
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    PassportModule
+    PassportModule,
+    ProjectsModule
   ],
   controllers: [AppController],
   providers: [AppService, AzureADStrategy],

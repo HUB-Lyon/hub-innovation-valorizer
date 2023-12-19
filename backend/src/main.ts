@@ -51,8 +51,7 @@ async function bootstrap() {
         crossOriginResourcePolicy: false,
       }),
       cors({
-        origin:
-          process.env.NODE_ENV === 'production' ? process.env.FRONT_URL : '*',
+        origin: '*',
         methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD', 'PATCH', 'DELETE'],
       }),
     );
