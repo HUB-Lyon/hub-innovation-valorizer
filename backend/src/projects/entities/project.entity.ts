@@ -40,7 +40,6 @@ export class Project {
     @Min(0)
     @Max(40)
     @ApiProperty()
-    @ApiProperty()
     xp: number;
     
     @Column()

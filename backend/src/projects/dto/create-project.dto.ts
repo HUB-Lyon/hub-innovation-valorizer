@@ -7,13 +7,13 @@ export class CreateProjectDto
 extends PickType(Project, ['name', 'shortDescription', 'description', 'xp', 'github', 'intra']) {
     @IsNumber({}, { each: true })
     @ApiProperty()
-    membersIds: number[];
+    membersIds: number[]; // TODO Member[] only id and roleId
     
     @ApiProperty({ type: [CreateMilestoneDto] })
     milestones: CreateMilestoneDto[]
     
     @ApiProperty()
-    materials: any[] // TODO: Material[]
+    materials: any[] // TODO: Material[] only id and quantity
     
     @ApiProperty({ type: [Object], description: 'Images sent via formData' })
     images: Express.Multer.File[];
