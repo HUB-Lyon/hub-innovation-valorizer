@@ -1,5 +1,6 @@
 [
-  {"id": 0, "label": "Développeur fullstack"},
-  {"id": 1, "label": "Développeur front"},
-  {"id": 2, "label": "Développeur back"}
+  {"id": 0, "label": "Chef de projet"},
+  {"id": 1, "label": "Développeur fullstack"},
+  {"id": 2, "label": "Développeur front"},
+  {"id": 3, "label": "Développeur back"}
 ]

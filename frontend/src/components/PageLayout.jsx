@@ -169,7 +169,7 @@ export const PageLayout = () => {
             <span className="sr-only">Open sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
-          <div className="flex-1 text-sm font-semibold leading-6 text-white">Plateforme HUB</div>
+          <div className="flex-1 text-sm font-semibold leading-6 text-white">HUB Innovation Valorizer</div>
         </div>
 
         <main className="py-10 lg:pl-72 min-h-screen grid">

@@ -19,9 +19,16 @@ const getRoles = async () => {
   return await res.json()
 }
 
+const getInventory = async () => {
+  const res = await fetch(`${API_URL}/inventory.json`)
+  return await res.json()
+}
+
+
 export {
   classNames,
   getProjects,
   getUsers,
   getRoles,
+  getInventory,
 }

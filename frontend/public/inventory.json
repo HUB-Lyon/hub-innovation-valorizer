@@ -1,0 +1,5 @@
+[
+  {"id": 0, "name": "Arduino", "quantity": 5, "availableQuantity": 3},
+  {"id": 1, "name": "Imprimante 3d", "quantity": 1, "availableQuantity": 1},
+  {"id": 2, "name": "Capteur de proximité", "quantity": 10, "availableQuantity": 10}
+]

@@ -8,7 +8,6 @@ const Login = () => {
 
   const handleLogin = () => {
     instance.loginRedirect(loginRequest).catch(e => {
-      console.log(e);
     });
   }
   return (

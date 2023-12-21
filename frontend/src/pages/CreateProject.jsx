@@ -3,18 +3,22 @@ import { GlobeAltIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useFormik } from "formik";
 import { useMsal } from "@azure/msal-react";
 
-import { getRoles, getUsers } from "../utils";
+import UserSelector from "../components/UserSelector";
 import Input from "../components/Input";
 import ReactQuill from "react-quill";
 import Button from "../components/Button";
+import MilestoneSelector from "../components/MillestoneSelector";
+import { getInventory, getRoles, getUsers } from "../utils";
 
 import 'react-quill/dist/quill.snow.css';
+import InventoryPicker from "../components/InventoryPicker";
 
 const CreateProject = () => {
-  const email = useMsal().accounts[0].username
+  const currentUserEmail = useMsal().accounts[0].username
 
   const [users, setUsers] = useState([])
   const [roles, setRoles] = useState([])
+  const [inventory, setInventory] = useState([])
   const [me, setMe] = useState(null)
   const [files, setFiles] = useState([])
 
@@ -26,19 +30,23 @@ const CreateProject = () => {
     const _setUsers = async () => {
       setUsers(await getUsers())
     }
+    const _setInventory = async () => {
+      setInventory(await getInventory())
+    }
 
     _setUsers()
     _setRoles()
+    _setInventory()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const _setMe = async () => {
-      const _me = users.find(user => user.email === email)
+      const _me = users.find(user => user.email === currentUserEmail)
       setMe(_me)
     }
 
     _setMe()
-  }, [users, email])
+  }, [users, currentUserEmail])
 
 
   const formik = useFormik({
@@ -46,14 +54,14 @@ const CreateProject = () => {
       name: '',                   // DONE
       shortDescription: '',       // DONE
       description: '',            // DONE
-      members: [],
+      members: [],                // DONE
       links: {                    // DONE
         intra: '',                // DONE
         github: '',               // DONE
       },                          // DONE
       materialNeeded: [],
       xp: 0,                      // DONE
-      milestones: [],
+      milestones: [],             // DONE
     },
     onSubmit: async (values) => {
       console.log({ ...values, images: files })
@@ -62,7 +70,7 @@ const CreateProject = () => {
 
   const addFile = async (e) => {
     Array.from(e.target.files).map(async file => {
-      return await new Promise((resolve) => {
+      return await new Promise(() => {
         const reader = new FileReader()
 
         reader.readAsDataURL(file)
@@ -86,17 +94,31 @@ const CreateProject = () => {
   return (
     <div>
       <h1 className="font-bold text-3xl mb-5 text-center">Créer un projet</h1>
-      <form onSubmit={formik.handleSubmit} className="">
+      <form onSubmit={formik.handleSubmit} className="grid gap-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left column */}
           <div className="grid gap-4">
             <Input label="Nom" name="name" onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Is this ponpon ?" />
-            <Input label="Description courte" name="shortDescription" onChange={formik.handleChange} onBlur={formik.handleBlur} as="textarea" rows={10} placeholder="UwU" />
+            <Input label="Description courte" name="shortDescription" onChange={formik.handleChange} onBlur={formik.handleBlur} as="textarea" rows={3} placeholder="UwU" />
             <Input label="XP" name="xp" type="number" onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="42" />
             <div className="flex flex-col gap-4">
               <Input type="url" label="Lien du dossier Github" name="links.github" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://github.com/..." />
-              <Input type="url" label="Lien intranet" name="links.intra" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://intra.epitech.eu/..." />
+              {/* <Input type="url" label="Lien intranet" name="links.intra" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://intra.epitech.eu/..." /> */}
+            </div>
+            <div>
+              <label htmlFor="user-selector" className="block text-sm font-medium leading-6 text-gray-900">
+                Liste des membres
+              </label>
+              <UserSelector
+                users={users}
+                roles={roles}
+                me={me}
+                onChange={(value) => formik.setFieldValue("members", value)}
+              />
             </div>
           </div>
+
+          {/* Right column */}
           <div className="h-full flex flex-col gap-4">
             <div className="h-2/3 mb-4 flex flex-col">
               <label htmlFor="content" className="block text-sm font-medium leading-6 text-gray-900">
@@ -137,10 +159,30 @@ const CreateProject = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-end mt-4">
-          <Button type="submit">Submit</Button>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <MilestoneSelector
+            onChange={(values) => {
+              formik.setFieldValue('milestones', values)
+            }}
+            removeMilestone={(idx) => {
+              const oldValue = formik.values.milestones
+              oldValue.splice(idx, 1)
+              formik.setFieldValue("milestones", oldValue)
+            }}
+            milestones={formik.values.milestones}
+          />
+          <InventoryPicker
+            onChange={(value) => {
+              formik.setFieldValue("materialNeeded", value.map(({ id, quantity }) => ({ id, quantity })))
+            }}
+            inventory={inventory}
+          />
         </div>
 
+        {/* Submit button */}
+        <div className="flex justify-end mt-4">
+          <Button type="submit">Envoyer</Button>
+        </div>
       </form>
     </div>
   )
