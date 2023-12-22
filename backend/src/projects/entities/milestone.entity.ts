@@ -27,6 +27,6 @@ export class Milestone {
     @ApiProperty()
     date: Date;
 
-    @ManyToOne(() => Project, (project) => project.milestones)
+    @ManyToOne(() => Project, (project) => project.milestones, { onDelete: "CASCADE", onUpdate: "CASCADE" })
     project: Project;
 }

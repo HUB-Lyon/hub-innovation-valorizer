@@ -70,7 +70,7 @@ export class Project {
     @ApiProperty({ default: new Date})
     createdAt: Date;
     
-    @OneToMany(() => Milestone, (milestone) => null)
+    @OneToMany(() => Milestone, (milestone) => milestone.project, { cascade: true })
     @ValidateNested({ each: true })
     @ApiProperty({ type: () => [Milestone] })
     milestones: Milestone[]
