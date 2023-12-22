@@ -20,9 +20,9 @@
       "test:e2e": "jest --config ./test/jest-e2e.json",
       "db:cli": "ts-node ./node_modules/typeorm/cli",
       "db:init": "ts-node database/init.ts",
-      "db:drop": "ts-node database/drop.ts",
-      "db:migration-create": "npm run db:cli migration:create ./migrations/m",
-      "db:migrate": "npm run db:cli migration:run -- -d ./src/global/configs/typeorm.config.ts"
+      "db:migration:create": "npm run db:cli migration:create ./database/migrations/m",
+      "db:migration:generate": "npm run db:cli migration:generate ./database/migrations/m -- -d ./src/global/configs/typeorm.config.ts",
+      "db:migration:run": "npm run db:cli migration:run -- -d ./src/global/configs/typeorm.config.ts"
    },
    "dependencies": {
       "@nestjs/common": "^10.0.0",
