@@ -1,13 +1,14 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn} from 'typeorm';
-import { Milestone } from '../entities/milestone.entity'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import { Milestone } from './milestone.entity'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import {IsNotEmpty, IsOptional, IsString, IsNumber, IsEmail, Min, Max, MaxLength, IsFQDN, IsEnum, ValidateNested} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEmail, Min, Max, MaxLength, IsFQDN, IsEnum, ValidateNested } from 'class-validator';
 
 export enum ProjectStatus {
     PENDING = 'Pending',
     REFUSED = 'Refused',
     ACCEPTED = 'Accepted',
-    ARCHIVED = 'Archived',
+    DONE = 'Done',
+    KO = 'K.-O.',
 }
 
 @Entity()
@@ -56,20 +57,24 @@ export class Project {
     @ApiProperty({description: 'Project images path joined by \'|\''})
     images: string;
     
-    @Column({ enum: ['Pending', 'Refused', 'Accepted', 'Archived'], default: 'Pending' })
+    @Column({ enum: Object.values(ProjectStatus), default: ProjectStatus.PENDING })
     @IsEnum(ProjectStatus)
-    @ApiProperty({enum: ['Pending', 'Refused', 'Accepted', 'Archived'], default: 'Pending'})
+    @ApiProperty({ enum: Object.values(ProjectStatus), default: ProjectStatus.PENDING })
     status: ProjectStatus;
-    
     
     @CreateDateColumn()
     @ApiProperty({ default: new Date})
-    statusUpdatedAt: Date
+    statusUpdatedAt: Date;
     
     @CreateDateColumn()
     @ApiProperty({ default: new Date})
     createdAt: Date;
     
+    @OneToMany(() => Milestone, (milestone) => null)
+    @ValidateNested({ each: true })
+    @ApiProperty({ type: () => [Milestone] })
+    milestones: Milestone[]
+
     // TODO: Foreign key
     @ApiPropertyOptional()
     statusUpdatedBy?: any; // User
@@ -82,8 +87,4 @@ export class Project {
     
     @ApiProperty()
     materials: any[] // Material[]
-    
-    @ValidateNested({ each: true })
-    @ApiProperty({ type: [Milestone] })
-    milestones: Milestone[] // Milestone[]
 }

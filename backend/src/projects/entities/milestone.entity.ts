@@ -1,6 +1,7 @@
-import {Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNotEmpty, IsString, Max } from 'class-validator';
+import { Project } from './project.entity'
 
 @Entity()
 export class Milestone {
@@ -25,4 +26,7 @@ export class Milestone {
     @IsDate()
     @ApiProperty()
     date: Date;
+
+    @ManyToOne(() => Project, (project) => project.milestones)
+    project: Project;
 }
