@@ -8,9 +8,7 @@ const dbConfig = {
     ...config,
     database: 'hiv',
     entities: ["dist/**/*.entity{.ts,.js}"],
-    migrations: ["dist/migrations/*{.ts,.js}"],
-    //    autoLoadEntities: true,
-    //    synchronize: false,
+    migrations: ["dist/database/migrations/*{.ts,.js}"],
 }
 
 export default registerAs('typeorm', () => dbConfig)
