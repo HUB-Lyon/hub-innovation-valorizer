@@ -40,7 +40,6 @@ export class ProjectsController {
           images.map(async file => imagesPaths.push(await Uploader.handlePublicFile(file)))
         )
       } catch (e) {
-        console.error(e)
         return res.status(HttpStatus.BAD_REQUEST).json({ message: "Images upload failed" });
       }
 
