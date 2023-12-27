@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } f
 import { Milestone } from './milestone.entity'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEmail, Min, Max, MaxLength, IsFQDN, IsEnum, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export enum ProjectStatus {
     PENDING = 'Pending',
@@ -40,6 +41,7 @@ export class Project {
     @IsNumber()
     @Min(0)
     @Max(40)
+    @Type(() => Number)
     @ApiProperty()
     xp: number;
     
