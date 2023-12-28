@@ -1,5 +1,57 @@
 [
   {
+    "id": -1,
+    "name": "hub-innovation-valorizer",
+    "shortDescription": "Un site permettant de lister les projets HUB.\nUne partie administrateur reservée au pédago permet de valider les projets ou de demander des changements.",
+    "description": "<p><br></p><p class=\"ql-align-justify\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras placerat lobortis metus, pellentesque tempus nibh tincidunt non. Ut id orci blandit, ornare velit at, euismod sem. Donec pellentesque egestas felis eu consectetur. Aliquam aliquet augue ipsum, ac placerat ipsum cursus id. Integer luctus, dolor tincidunt fermentum egestas, sapien tellus pulvinar mauris, in pharetra mauris ligula at tellus. In sed leo scelerisque, tempus velit sit amet, varius nibh. Etiam semper elit et orci pharetra, nec fringilla velit condimentum. Aenean aliquet sem vitae luctus lacinia. Cras eleifend ac sapien id porttitor. Suspendisse non maximus nulla, eu elementum diam.</p>",
+    "members": [
+      {
+        "id": 0,
+        "role": 2
+      },
+      {
+        "id": 1,
+        "role": 3
+      },
+      {
+        "id": 2,
+        "role": 0
+      }
+    ],
+    "intra": "",
+    "github": "https://github.com/hub-lyon/hub-innovation-valorizer",
+    "materialNeeded": [],
+    "xp": 0,
+    "milestones": [
+      {
+        "title": "Cahier des charges",
+        "date": "2023-12-01",
+        "description": "Rédaction du cahier des charges, établir les fonctionnalités prioritaires et annexes."
+      },
+      {
+        "title": "Stack techique",
+        "date": "2023-12-01",
+        "description": "Définition de la stack technique en fonction de la préférences de l'équipe et des besoins liés aux tâches définies plus tôt"
+      },
+      {
+        "title": "PoC",
+        "date": "2023-12-03",
+        "description": "Création d'une app font permettant l'affichage de données factices, stockées dans des fichiers json statiques.\nPas de gestion de droit à ce niveau."
+      },
+      {
+        "title": "OAuth",
+        "date": "2023-12-04",
+        "description": "Mise en place de l'OAuth Microsoft.\nCela permettra d'assurer une sécurité minimale en attentant le rapport pentest."
+      },
+      {
+        "title": "Backend",
+        "date": "2023-12-09",
+        "description": "Création des routes de base :\nUsers :\n  - Création d'un utilisateur\n  - Vérification de droit\n  - Promotion d'un utilisateur au statut 'pédago'\nProjets :\n  - Créer un projet\n  - Valider/refuser un projet (si admin)\n  - Modifier un projet (si auteur original)\n  - Archiver un projet (si admin)\nArticles :\n  - Créer un article\n  - Valider/refuser un article (si admin)\n  - Modifier un article (si auteur original)\n  - Supprimer un article (si admin)\nInventaire :\n  - Lister l'inventaire\n  - Ajouter/retirer des objets"
+      }
+    ],
+    "images": []
+  },
+  {
     "id": 0,
     "name": "Plateforme HUB",
     "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nunc nisl, pellentesque sit amet risus eget, pretium posuere nulla.",
@@ -25,11 +77,10 @@
     },
     "materialNeeded": [
       {
-       "name": "",
-       "quantity": ""
+        "name": "",
+        "quantity": ""
       }
     ],
-
     "xp": "10",
     "milestones": [
       {
@@ -48,7 +99,7 @@
       "https://source.unsplash.com/random/1921x1080"
     ]
   },
-    {
+  {
     "id": 1,
     "name": "Plateforme HUB",
     "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nunc nisl, pellentesque sit amet risus eget, pretium posuere nulla.",
@@ -86,7 +137,7 @@
       "https://source.unsplash.com/random/1921x1080"
     ]
   },
-    {
+  {
     "id": 2,
     "name": "Plateforme HUB",
     "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nunc nisl, pellentesque sit amet risus eget, pretium posuere nulla.",
@@ -124,7 +175,7 @@
       "https://source.unsplash.com/random/1922x1080"
     ]
   },
-    {
+  {
     "id": 3,
     "name": "Plateforme HUB",
     "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nunc nisl, pellentesque sit amet risus eget, pretium posuere nulla.",
@@ -162,7 +213,7 @@
       "https://source.unsplash.com/random/1923x1080"
     ]
   },
-    {
+  {
     "id": 4,
     "name": "Plateforme HUB",
     "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nunc nisl, pellentesque sit amet risus eget, pretium posuere nulla.",
@@ -200,7 +251,7 @@
       "https://source.unsplash.com/random/1924x1080"
     ]
   },
-    {
+  {
     "id": 5,
     "name": "Plateforme HUB",
     "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nunc nisl, pellentesque sit amet risus eget, pretium posuere nulla.",

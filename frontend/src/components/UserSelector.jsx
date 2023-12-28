@@ -12,7 +12,7 @@ const UserSelector = ({ users, roles, me, onChange }) => {
     if (me) {
       setSelected(old => {
         const newValue = [{ email: me.email, id: me.id, role: roles[0].id, ...old }]
-        onChange(newValue)
+        onChange([{ id: me.id, role: roles[0].id }])
         return newValue
       })
     }
@@ -29,7 +29,8 @@ const UserSelector = ({ users, roles, me, onChange }) => {
   const addUser = ({ email, id }) => {
     setSelected(old => {
       const newValue = [...old, { email, id, role: roles[0].id }]
-      onChange(newValue)
+      const parsedValue = newValue.map(({ id, role }) => ({ id, role }))
+      onChange(parsedValue)
       return newValue
     })
   }
@@ -47,7 +48,7 @@ const UserSelector = ({ users, roles, me, onChange }) => {
             {idx !== 0 &&
               <button
                 type="button"
-                className="absolute top-2.5 right-0 lghidden group-hover:block"
+                className="absolute top-0.5 right-0 lg:hidden group-hover:block"
                 onClick={() => removeUser(user.id)}
               >
                 <TrashIcon className="h-4 text-red-500 m-2" />
@@ -61,7 +62,8 @@ const UserSelector = ({ users, roles, me, onChange }) => {
               setSelected(old => {
                 const userIndex = old.findIndex(u => u.id === user.id)
                 old[userIndex].role = e.id
-                onChange(old)
+                const parsedValue = old.map(({ id, role }) => ({ id, role }))
+                onChange(parsedValue)
                 return old
               })
             }}

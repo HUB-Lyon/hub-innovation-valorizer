@@ -51,17 +51,15 @@ const CreateProject = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',                   // DONE
-      shortDescription: '',       // DONE
-      description: '',            // DONE
-      members: [],                // DONE
-      links: {                    // DONE
-        intra: '',                // DONE
-        github: '',               // DONE
-      },                          // DONE
+      name: '',
+      shortDescription: '',
+      description: '',
+      members: [],
+      intra: '',
+      github: '',
       materialNeeded: [],
-      xp: 0,                      // DONE
-      milestones: [],             // DONE
+      xp: 0,
+      milestones: [],
     },
     onSubmit: async (values) => {
       console.log({ ...values, images: files })
@@ -102,8 +100,8 @@ const CreateProject = () => {
             <Input label="Description courte" name="shortDescription" onChange={formik.handleChange} onBlur={formik.handleBlur} as="textarea" rows={3} placeholder="UwU" />
             <Input label="XP" name="xp" type="number" onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="42" />
             <div className="flex flex-col gap-4">
-              <Input type="url" label="Lien du dossier Github" name="links.github" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://github.com/..." />
-              {/* <Input type="url" label="Lien intranet" name="links.intra" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://intra.epitech.eu/..." /> */}
+              <Input type="url" label="Lien du dossier Github" name="github" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://github.com/..." />
+              {/* <Input type="url" label="Lien intranet" name="intra" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://intra.epitech.eu/..." /> */}
             </div>
             <div>
               <label htmlFor="user-selector" className="block text-sm font-medium leading-6 text-gray-900">

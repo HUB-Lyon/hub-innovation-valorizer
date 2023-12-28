@@ -94,7 +94,7 @@ const Project = () => {
               <ul className='mt-2 list-disc'>
                 {project.members.map(member =>
                   <li key={member.email} className="text-sm italic">
-                    <span className='font-semibold'>{member.email}</span> - <span className='lowercase'>{member.role}</span>
+                    <span className='font-semibold'>{member.id}</span> - <span className='lowercase'>{member.role}</span>
                   </li>
                 )}
               </ul>
@@ -107,10 +107,10 @@ const Project = () => {
                 <a href={`https://teams.microsoft.com/l/chat/0/0?users=${project.members.map(member => member.email).join(',')}`} target="_blank" rel="noreferrer">
                   <img src="/teams.svg" alt="Appeler avec teams" className="h-6 aspect-square" />
                 </a>
-                <a href={project.link.github} target="_blank" rel="noreferrer">
+                <a href={project.github} target="_blank" rel="noreferrer">
                   <img src="/github.svg" alt="Voir le github" className="h-6 aspect-square" />
                 </a>
-                <a href={project.link.intra} target="_blank" rel="noreferrer">
+                <a href={project.intra} target="_blank" rel="noreferrer">
                   <img src="/epitech.png" alt="Page intra" className="h-6 aspect-square" />
                 </a>
               </div>
