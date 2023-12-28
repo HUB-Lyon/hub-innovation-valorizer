@@ -46,7 +46,7 @@ export class Project {
     xp: number;
     
     @Column()
-    @IsFQDN()
+  //  @IsFQDN()
     @ApiProperty()
     github: string;
     
