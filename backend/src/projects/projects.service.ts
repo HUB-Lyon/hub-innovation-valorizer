@@ -18,7 +18,7 @@ export class ProjectsService {
     return await this.projectRepository.save({
       ...createProjectDto,
       intra,
-      images: imagesPaths.join('|')
+      images: imagesPaths.join('|'),
     })
   }
 
@@ -46,6 +46,8 @@ export class ProjectsService {
       .select(['project.id', 'project.name', 'project.shortDescription', 'project.description', 'project.xp', 'project.github', 'project.intra', 'project.images', 'project.status'])
       .leftJoin('project.milestones', 'milestones')
       .addSelect(['milestones.id', 'milestones.name', 'milestones.description', 'milestones.date'])
+      .leftJoin('project.members', 'members')
+      .addSelect(['members.email', 'members.role'])
       .where("project.id = :id", { id })
       //.where("status IN(:...status)", { status })
       .getOne()
