@@ -15,7 +15,9 @@ import {
 } from './schema/project.inputs';
 import { User } from 'src/decorators/user';
 import { HIVUser } from 'src/users/schema/user.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Projects')
 @Controller('/projects')
 export class ProjectController {
   constructor(private projectSerivce: ProjectService) {}

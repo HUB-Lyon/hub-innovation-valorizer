@@ -27,6 +27,7 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/serve-static": "^4.0.0",
+    "@nestjs/swagger": "^7.1.17",
     "module": "^1.2.5",
     "mongoose": "^8.0.3",
     "passport-azure-ad": "^4.3.5",
