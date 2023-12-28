@@ -1,9 +1,6 @@
 # compiled output
 /dist
 /node_modules
-/log
-/upload/tmp
-/upload/public
 
 # Logs
 logs
@@ -36,6 +33,3 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-# Environment
-.env
