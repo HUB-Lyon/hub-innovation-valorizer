@@ -8,14 +8,11 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
 
-import { Public } from '../global/decorators/public.decorator';
-
 @ApiTags('Projects')
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
   
-  @Public() // TEMP
   @Post()
   @UseInterceptors(
     FilesInterceptor('images', 100, {
@@ -43,7 +40,7 @@ export class ProjectsController {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: "Images upload failed" });
       }
 
-      const project = this.projectsService.create(createProjectDto, imagesPaths);
+      const project = await this.projectsService.create(createProjectDto, imagesPaths);
       return res.status(HttpStatus.CREATED).json(project);
     } catch (err) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -53,7 +50,6 @@ export class ProjectsController {
     }
   }
 
-  @Public() // TEMP
   @Get()
   @ApiOkResponse({ type: Project, description: 'Get all projects basics informations' })
   async findAll(@Req() req, @Res() res) {
@@ -68,9 +64,11 @@ export class ProjectsController {
     }
   }
 
-  @Public() // TEMP
   @Get(':id')
+  @ApiOkResponse({ type: Project, description: 'Get project basics informations by projectId' })
+  @ApiNotFoundResponse({ type: null, description: 'Id given have no project associated' })
   async findOne(@Req() req, @Res() res, @Param('id') id: number) {
+    // TODO: return forbidden access if project status is pending and user is not admin
     try {
       const project = await this.projectsService.findOne(id);
       if (!project) return res.status(HttpStatus.NOT_FOUND).json();

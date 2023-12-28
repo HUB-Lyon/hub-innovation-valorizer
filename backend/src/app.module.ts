@@ -12,6 +12,7 @@ import { AzureADStrategy } from './global/guards/azure-ad.guard';
 import { ProjectsModule } from './projects/projects.module';
 import { Project } from './projects/entities/project.entity';
 import { Milestone } from './projects/entities/milestone.entity';
+import { UsersModule } from './users/users.module';
 
 @Global()
 @Module({
@@ -26,7 +27,8 @@ import { Milestone } from './projects/entities/milestone.entity';
     }),
     PassportModule,
 
-    ProjectsModule
+    ProjectsModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService, AzureADStrategy],
