@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { MemberAndRole, Milestone } from './project.inputs';
+import { MemberAndRole, Milestone, Status } from './project.inputs';
 
 @Schema()
 export class Project extends Document {
@@ -29,6 +29,21 @@ export class Project extends Document {
 
   @Prop()
   images: Array<string>;
+
+  @Prop()
+  createdBy: string;
+
+  @Prop()
+  createdAt: number;
+
+  @Prop()
+  status: Status;
+
+  @Prop()
+  statusUpdatedBy: string;
+
+  @Prop()
+  statusUpdatedAt: number;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);
