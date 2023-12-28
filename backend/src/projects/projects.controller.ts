@@ -14,27 +14,18 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
   
   @Post()
-  @UseInterceptors(
-    FilesInterceptor('images', 100, {
-      storage: diskStorage({
-        destination: Uploader.temporaryPath
-      }),
-    })
-  )
-  @ApiConsumes('multipart/form-data')
   @ApiCreatedResponse({ type: Project, description: 'Create a new project' })
   @ApiNotFoundResponse({ description: 'Member or material not found' })
   async create(
     @Req() req,
     @Res() res,
     @Body() createProjectDto: CreateProjectDto,
-    @UploadedFiles() images: Array<Express.Multer.File>
   ) {
     try {
-      let imagesPaths: any[] = [];
+      let imagesPaths: string[] = [];
       try {
         await Promise.all(
-          images.map(async file => imagesPaths.push(await Uploader.handlePublicFile(file)))
+          createProjectDto.images.map(async image => imagesPaths.push(await Uploader.handlePublicFile(image)))
         )
       } catch (e) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: "Images upload failed" });

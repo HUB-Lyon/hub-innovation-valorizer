@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { Milestone } from './milestone.entity'
+import { Member } from './member.entity'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEmail, Min, Max, MaxLength, IsFQDN, IsEnum, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -47,6 +48,7 @@ export class Project {
     
     @Column()
   //  @IsFQDN()
+    @IsString()
     @ApiProperty()
     github: string;
     
@@ -77,15 +79,18 @@ export class Project {
     @ApiProperty({ type: () => [Milestone] })
     milestones: Milestone[]
 
+    @OneToMany(() => Member, (member) => member.project, { cascade: true })
+    @ValidateNested({ each: true })
+    @Type(() => Member)
+    @ApiProperty()
+    members: Member[]
+
     // TODO: Foreign key
     @ApiPropertyOptional()
     statusUpdatedBy?: any; // User
     
     @ApiProperty()
     createdBy: any // User
-    
-    @ApiProperty()
-    members: any[] // User[]
     
     @ApiProperty()
     materials: any[] // Material[]
