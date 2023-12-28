@@ -22,7 +22,6 @@ const CreateProject = () => {
   const [me, setMe] = useState(null)
   const [files, setFiles] = useState([])
 
-
   useEffect(() => {
     const _setRoles = async () => {
       setRoles(await getRoles())
@@ -33,6 +32,7 @@ const CreateProject = () => {
     const _setInventory = async () => {
       setInventory(await getInventory())
     }
+
 
     _setUsers()
     _setRoles()
@@ -68,6 +68,7 @@ const CreateProject = () => {
 
   const addFile = async (e) => {
     Array.from(e.target.files).map(async file => {
+      console.log(file)
       return await new Promise(() => {
         const reader = new FileReader()
 

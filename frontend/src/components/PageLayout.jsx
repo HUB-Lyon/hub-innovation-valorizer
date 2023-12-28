@@ -15,6 +15,7 @@ import Projects from '../pages/Projects'
 import Project from '../pages/Project'
 import NotFound from '../pages/NotFound'
 import CreateProject from '../pages/CreateProject'
+import Inventory from '../pages/Inventory'
 
 const navigation = [
   { name: 'Articles', href: '/', icon: NewspaperIcon, current: false },
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
   { path: "/projects", element: <Projects /> },
   { path: "/projects/:id", element: <Project /> },
   { path: "/create-project", element: <CreateProject /> },
+  { path: "/inventory", element: <Inventory /> },
   { path: '*', element: <NotFound /> },
 ])
 

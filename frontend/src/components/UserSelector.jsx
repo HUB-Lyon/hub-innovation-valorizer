@@ -11,8 +11,8 @@ const UserSelector = ({ users, roles, me, onChange }) => {
   useEffect(() => {
     if (me) {
       setSelected(old => {
-        const newValue = [{ email: me.email, id: me.id, role: roles[0].id, ...old }]
-        onChange([{ id: me.id, role: roles[0].id }])
+        const newValue = [{ email: me.email, id: me.id, role: roles[0].label, ...old }]
+        onChange(newValue)
         return newValue
       })
     }
@@ -28,9 +28,8 @@ const UserSelector = ({ users, roles, me, onChange }) => {
 
   const addUser = ({ email, id }) => {
     setSelected(old => {
-      const newValue = [...old, { email, id, role: roles[0].id }]
-      const parsedValue = newValue.map(({ id, role }) => ({ id, role }))
-      onChange(parsedValue)
+      const newValue = [...old, { email, id, role: roles[0].label }]
+      onChange(newValue)
       return newValue
     })
   }

@@ -5,22 +5,22 @@ function classNames(...classes) {
 }
 
 const getProjects = async () => {
-  const res = await fetch(`${API_URL}/projects.json`)
+  const res = await fetch(`/projects.json`)
   return await res.json()
 }
 
 const getUsers = async () => {
-  const res = await fetch(`${API_URL}/users.json`)
+  const res = await fetch(`/users.json`)
   return await res.json()
 }
 
 const getRoles = async () => {
-  const res = await fetch(`${API_URL}/roles.json`)
+  const res = await fetch(`/roles.json`)
   return await res.json()
 }
 
 const getInventory = async () => {
-  const res = await fetch(`${API_URL}/inventory.json`)
+  const res = await fetch(`/inventory.json`)
   return await res.json()
 }
 

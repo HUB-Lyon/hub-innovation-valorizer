@@ -7,8 +7,7 @@ const Login = () => {
   const { instance } = useMsal();
 
   const handleLogin = () => {
-    instance.loginRedirect(loginRequest).catch(e => {
-    });
+    instance.loginRedirect(loginRequest).catch(e => {});
   }
   return (
     <div className="h-screen w-screen bg-login bg-cover flex flex-col items-center justify-center">
