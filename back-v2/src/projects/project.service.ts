@@ -32,10 +32,10 @@ export class ProjectService {
   async create(data: CreateProjectDTO, user: HIVUser): Promise<Project> {
     const payload = {
       ...data,
-      createdBy: user.preferred_username,
+      createdBy: user.email,
       createdAt: +new Date(),
       status: 'PENDING',
-      statusUpdatedBy: user.preferred_username,
+      statusUpdatedBy: user.email,
       statusUpdatedAt: +new Date(),
     };
 
@@ -55,7 +55,7 @@ export class ProjectService {
     this.projectModel.findByIdAndUpdate(id, {
       $set: {
         status,
-        statusUpdatedBy: user.preferred_username,
+        statusUpdatedBy: user.email,
         statusUpdatedAt: +new Date(),
       },
     });

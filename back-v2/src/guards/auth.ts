@@ -3,6 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy, AuthGuard } from '@nestjs/passport';
 import { BearerStrategy } from 'passport-azure-ad';
 import { Reflector } from '@nestjs/core';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from '../users/schema/user.schema';
 
 @Injectable()
 export class AzureADStrategy extends PassportStrategy(
@@ -25,7 +28,10 @@ export class AzureADStrategy extends PassportStrategy(
 
 @Injectable()
 export class AzureADGuard extends AuthGuard('azure-ad') {
-  constructor(private readonly reflector: Reflector) {
+  constructor(
+    private readonly reflector: Reflector,
+    @InjectModel(User.name) private userModel: Model<User>,
+  ) {
     super();
   }
 
@@ -37,6 +43,19 @@ export class AzureADGuard extends AuthGuard('azure-ad') {
     // return true; //TODO Delete this
     if (isPublic) return true;
 
-    return (await super.canActivate(context)) as boolean;
+    await super.canActivate(context); // Throw 401 if token not valid
+
+    const req = context.switchToHttp().getRequest();
+
+    let user = await this.userModel.findOne({
+      email: req.user['preferred_username'],
+    });
+    if (!user) {
+      user = await this.userModel.create({
+        email: req.user['preferred_username'],
+      });
+    }
+    req.user = user;
+    return true;
   }
 }
