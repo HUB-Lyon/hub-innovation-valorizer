@@ -8,7 +8,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { FileUploaderController } from './file-uploader/file-uploader.controller';
 import { FileUploaderModule } from './file-uploader/file-uploader.module';
-import { AzureADStrategy } from './middlewares/auth';
+import { AzureADStrategy } from './guards/auth';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
 
