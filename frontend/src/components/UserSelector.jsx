@@ -11,7 +11,7 @@ const UserSelector = ({ users, roles, me, onChange, initialValues = null }) => {
   useEffect(() => {
     if (me && !initialValues) {
       setSelected(old => {
-        const newValue = [{ email: me.email, role: roles[0].label, ...old }]
+        const newValue = [{ email: me.email, _id: me._id, role: roles[0].label, ...old }]
         onChange(newValue)
         return newValue
       })
@@ -23,38 +23,37 @@ const UserSelector = ({ users, roles, me, onChange, initialValues = null }) => {
 
     if (query === '')
       return !alreadySelectedEmails.includes(user.email)
-    return user.email.toLowerCase().includes(query.toLowerCase()) && !alreadySelectedEmails.includes(user.email)
+    return user.email.toLowerCase().startsWith(query.toLowerCase()) && !alreadySelectedEmails.includes(user.email)
   })
 
-  const addUser = ({ email, id }) => {
+  const addUser = ({ email, _id }) => {
     setSelected(old => {
-      const newValue = [...old, { email, id, role: roles[0].label }]
+      const newValue = [...old, { email, _id, role: roles[0].label }]
       onChange(newValue)
       return newValue
     })
   }
 
-  const removeUser = (id) => {
-    setSelected(old => old.filter(u => u.id !== id))
+  const removeUser = (_id) => {
+    setSelected(old => old.filter(u => u._id !== _id))
   }
 
   return (
     <>
       {selected.map((user, idx) => (
-        <div key={user.id} className='grid grid-cols-1 lg:grid-cols-2 lg:gap-2 mt-2 lg:mt-0'>
+        <div key={user._id} className='grid grid-cols-1 lg:grid-cols-2 lg:gap-2 mt-2 lg:mt-0'>
           <div className="group relative">
             <Input value={user.email} disabled classes="rounded-b-none lg:rounded-b-lg" />
             {idx !== 0 &&
               <button
                 type="button"
                 className="absolute top-0.5 right-0 lg:hidden group-hover:block"
-                onClick={() => removeUser(user.id)}
+                onClick={() => removeUser(user._id)}
               >
                 <TrashIcon className="h-4 text-red-500 m-2" />
               </button>
             }
           </div>
-          {console.log(roles.find(e => e.label === user.role))}
           <Select
             options={roles}
             classes="rounded-t-none lg:rounded-t-lg"
@@ -102,7 +101,7 @@ const UserSelector = ({ users, roles, me, onChange, initialValues = null }) => {
               ) : (
                 filteredPeople.slice(0, 5).map((person) => (
                   <Combobox.Option
-                    key={person.id}
+                    key={person._id}
                     className={({ active }) => `relative cursor-default select-none p-2 ${active ? 'bg-epitechBlue-800 text-white' : 'text-gray-900'}`}
                     value={person}
                   >

@@ -13,10 +13,13 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { User, UserSchema } from './users/schema/user.schema';
+import { UserModule } from './users/user.module';
+import { UserController } from './users/user.controller';
 
 @Module({
   imports: [
     ProjectModule,
+    UserModule,
     FileUploaderModule,
     PassportModule,
     MongooseModule.forRoot('mongodb://localhost/nest'),
@@ -29,7 +32,12 @@ import { User, UserSchema } from './users/schema/user.schema';
       rootPath: join(__dirname, '..', 'public'),
     }),
   ],
-  controllers: [AppController, ProjectController, FileUploaderController],
+  controllers: [
+    AppController,
+    UserController,
+    ProjectController,
+    FileUploaderController,
+  ],
   providers: [
     AppService,
     AzureADStrategy,

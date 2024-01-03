@@ -8,7 +8,7 @@ import Input from "../components/Input";
 import ReactQuill from "react-quill";
 import Button from "../components/Button";
 import MilestoneSelector from "../components/MillestoneSelector";
-import { getInventory, getRoles, getUsers } from "../utils";
+import { getInventory, getRoles } from "../utils";
 
 import 'react-quill/dist/quill.snow.css';
 import InventoryPicker from "../components/InventoryPicker";
@@ -26,20 +26,37 @@ const CreateProject = ({
   const [roles, setRoles] = useState([])
   const [inventory, setInventory] = useState([])
   const [me, setMe] = useState(null)
+  const [userToken, setUserToken] = useState(null)
   const [files, setFiles] = useState(projectData?.images || [])
 
+
   useEffect(() => {
+    const _setUsers = async () => {
+      const res = await fetch(`${API_URL}/users`, { headers: { "Authorization": `Bearer ${userToken}` } })
+      const _users = await res.json()
+      setUsers(_users)
+    }
+
+    if (userToken && !users.length)
+      _setUsers()
+
+  }, [userToken])
+
+  useEffect(() => {
+    const _setUserToken = async () => {
+      const token = (await instance.acquireTokenSilent({ scopes: ['User.Read'], account: accounts[0] })).idToken
+      setUserToken(token)
+    }
+
     const _setRoles = async () => {
       setRoles(await getRoles())
     }
-    const _setUsers = async () => {
-      setUsers(await getUsers())
-    }
+
     const _setInventory = async () => {
       setInventory(await getInventory())
     }
 
-    _setUsers()
+    _setUserToken()
     _setRoles()
     _setInventory()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -67,7 +84,6 @@ const CreateProject = ({
       ...projectData
     },
     onSubmit: async (values) => {
-      const userToken = (await instance.acquireTokenSilent({ scopes: ['User.Read'], account: accounts[0] })).idToken
       const images = (await Promise.all(
         files.map(async file => {
           if (!file.name)

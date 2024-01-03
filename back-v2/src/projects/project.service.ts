@@ -74,7 +74,7 @@ export class ProjectService {
     const payload = {
       ...data,
       status: 'PENDING',
-      statusUpdatedBy: user.preferred_username,
+      statusUpdatedBy: user.email,
       statusUpdatedAt: +new Date(),
     };
 
