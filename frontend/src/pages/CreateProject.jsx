@@ -8,12 +8,13 @@ import Input from "../components/Input";
 import ReactQuill from "react-quill";
 import Button from "../components/Button";
 import MilestoneSelector from "../components/MillestoneSelector";
-import { getInventory, getRoles } from "../utils";
+import { getInventory } from "../utils";
 
 import 'react-quill/dist/quill.snow.css';
 import InventoryPicker from "../components/InventoryPicker";
 import { API_URL } from "../constants";
 import toast from "react-hot-toast";
+import roles from "../roles";
 
 const CreateProject = ({
   isEdit = false,
@@ -23,7 +24,6 @@ const CreateProject = ({
   const { instance, accounts } = useMsal()
 
   const [users, setUsers] = useState([])
-  const [roles, setRoles] = useState([])
   const [inventory, setInventory] = useState([])
   const [me, setMe] = useState(null)
   const [userToken, setUserToken] = useState(null)
@@ -37,10 +37,15 @@ const CreateProject = ({
       setUsers(_users)
     }
 
+    const _setInventory = async () => {
+      setInventory(await getInventory())
+    }
+
     if (userToken && !users.length)
       _setUsers()
-
-  }, [userToken])
+    if (userToken && !inventory.length)
+      _setInventory()
+  }, [userToken]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const _setUserToken = async () => {
@@ -48,18 +53,9 @@ const CreateProject = ({
       setUserToken(token)
     }
 
-    const _setRoles = async () => {
-      setRoles(await getRoles())
-    }
-
-    const _setInventory = async () => {
-      setInventory(await getInventory())
-    }
-
-    _setUserToken()
-    _setRoles()
-    _setInventory()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (instance && accounts && !userToken)
+      _setUserToken()
+  }, [instance, accounts, userToken])
 
   useEffect(() => {
     const _setMe = async () => {

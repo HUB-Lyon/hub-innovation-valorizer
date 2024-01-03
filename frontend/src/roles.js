@@ -1,4 +1,4 @@
-[
+const roles = [
   {"id": 0, "label": "Chef de projet"},
   {"id": 4, "label": "Analyste programmeur"},
   {"id": 5, "label": "Architecte logiciel"},
@@ -17,3 +17,5 @@
   {"id": 15, "label": "Développeur de jeux informatiques"},
   {"id": 16, "label": "Maintenance des systèmes d'exploitation"}
 ]
+
+export default roles
