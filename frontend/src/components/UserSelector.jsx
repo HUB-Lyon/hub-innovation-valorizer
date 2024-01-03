@@ -4,19 +4,19 @@ import { ChevronUpDownIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Input from './Input';
 import Select from './Select';
 
-const UserSelector = ({ users, roles, me, onChange }) => {
+const UserSelector = ({ users, roles, me, onChange, initialValues = null }) => {
   const [query, setQuery] = useState('')
-  const [selected, setSelected] = useState([])
+  const [selected, setSelected] = useState(initialValues || [])
 
   useEffect(() => {
-    if (me) {
+    if (me && !initialValues) {
       setSelected(old => {
-        const newValue = [{ email: me.email, id: me.id, role: roles[0].label, ...old }]
+        const newValue = [{ email: me.email, role: roles[0].label, ...old }]
         onChange(newValue)
         return newValue
       })
     }
-  }, [me]) //eslint-disable-line react-hooks/exhaustive-deps
+  }, [me, roles]) //eslint-disable-line react-hooks/exhaustive-deps
 
   const filteredPeople = users.filter((user) => {
     const alreadySelectedEmails = selected.map(e => e.email)
@@ -54,14 +54,16 @@ const UserSelector = ({ users, roles, me, onChange }) => {
               </button>
             }
           </div>
+          {console.log(roles.find(e => e.label === user.role))}
           <Select
             options={roles}
             classes="rounded-t-none lg:rounded-t-lg"
+            initialValue={roles.find(e => e.label === user.role)}
             onChange={e => {
               setSelected(old => {
                 const userIndex = old.findIndex(u => u.id === user.id)
-                old[userIndex].role = e.id
-                const parsedValue = old.map(({ id, role }) => ({ id, role }))
+                old[userIndex].role = e.label
+                const parsedValue = old.map(e => e)
                 onChange(parsedValue)
                 return old
               })

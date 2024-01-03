@@ -1,9 +1,15 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { classNames } from '../utils'
 
-const Select = ({ options, onChange, classes }) => {
+const Select = ({ options, onChange, classes, initialValue = null }) => {
+
+  useEffect(() => {
+    if (initialValue)
+      setSelected(initialValue)
+  }, [initialValue])
+
   const [selected, setSelected] = useState(options[0])
 
   const handleChange = (e) => {

@@ -47,7 +47,11 @@ export class ProjectController {
   }
 
   @Patch('/:id')
-  async updateById(@Param('id') id: string, @Body() data: UpdateProjectDTO) {
-    return await this.projectSerivce.updateById(id, data);
+  async updateById(
+    @Param('id') id: string,
+    @Body() data: UpdateProjectDTO,
+    @User() user: HIVUser,
+  ) {
+    return await this.projectSerivce.updateById(id, data, user);
   }
 }

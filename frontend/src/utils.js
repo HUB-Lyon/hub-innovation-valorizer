@@ -5,7 +5,7 @@ function classNames(...classes) {
 }
 
 const getProjects = async () => {
-  const res = await fetch(`/projects.json`)
+  const res = await fetch(`${API_URL}/projects`)
   return await res.json()
 }
 

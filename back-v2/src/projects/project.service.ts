@@ -66,10 +66,18 @@ export class ProjectService {
   async updateById(
     id: string,
     data: UpdateProjectDTO,
+    user: HIVUser,
   ): Promise<Project | null> {
     const exists = await this.projectModel.findById(id).exec();
     if (!exists) throw new NotFoundException();
 
-    return await this.projectModel.findByIdAndUpdate(id, data);
+    const payload = {
+      ...data,
+      status: 'PENDING',
+      statusUpdatedBy: user.preferred_username,
+      statusUpdatedAt: +new Date(),
+    };
+
+    return await this.projectModel.findByIdAndUpdate(id, payload);
   }
 }

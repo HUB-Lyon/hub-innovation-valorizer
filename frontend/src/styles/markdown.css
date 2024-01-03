@@ -25,6 +25,14 @@
   --lg: 1.25rem;
 }
 
+.markdown * {
+  white-space: break-spaces;
+}
+
+.markdown p br {
+  display: none;
+}
+
 .markdown h1,
 .markdown h2,
 .markdown h3,

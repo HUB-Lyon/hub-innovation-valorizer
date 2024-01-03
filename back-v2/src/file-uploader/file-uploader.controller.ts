@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { FileUploaderService } from './file-uploader.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -7,8 +7,9 @@ import { ApiTags } from '@nestjs/swagger';
 export class FileUploaderController {
   constructor(private fileUploaderService: FileUploaderService) {}
 
-  @Post('/')
-  createFile(@Body() data: { name: string; content: string }) {
+  @Post()
+  @HttpCode(201)
+  createFile(@Body() data: { content: string }) {
     return this.fileUploaderService.saveFile(data.content);
   }
 }

@@ -12,15 +12,21 @@ import { getInventory, getRoles, getUsers } from "../utils";
 
 import 'react-quill/dist/quill.snow.css';
 import InventoryPicker from "../components/InventoryPicker";
+import { API_URL } from "../constants";
+import toast from "react-hot-toast";
 
-const CreateProject = () => {
-  const currentUserEmail = useMsal().accounts[0].username
+const CreateProject = ({
+  isEdit = false,
+  toUpdate = null,
+  projectData = {},
+}) => {
+  const { instance, accounts } = useMsal()
 
   const [users, setUsers] = useState([])
   const [roles, setRoles] = useState([])
   const [inventory, setInventory] = useState([])
   const [me, setMe] = useState(null)
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState(projectData?.images || [])
 
   useEffect(() => {
     const _setRoles = async () => {
@@ -33,7 +39,6 @@ const CreateProject = () => {
       setInventory(await getInventory())
     }
 
-
     _setUsers()
     _setRoles()
     _setInventory()
@@ -41,13 +46,12 @@ const CreateProject = () => {
 
   useEffect(() => {
     const _setMe = async () => {
-      const _me = users.find(user => user.email === currentUserEmail)
+      const _me = users.find(user => user.email === accounts[0].username)
       setMe(_me)
     }
 
     _setMe()
-  }, [users, currentUserEmail])
-
+  }, [users, accounts])
 
   const formik = useFormik({
     initialValues: {
@@ -60,15 +64,45 @@ const CreateProject = () => {
       materialNeeded: [],
       xp: 0,
       milestones: [],
+      ...projectData
     },
     onSubmit: async (values) => {
-      console.log({ ...values, images: files })
+      const userToken = (await instance.acquireTokenSilent({ scopes: ['User.Read'], account: accounts[0] })).idToken
+      const images = (await Promise.all(
+        files.map(async file => {
+          if (!file.name)
+            return file
+          const res = await fetch(`${API_URL}/file-uploader`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "authorization": `Bearer ${userToken}`
+            },
+            body: JSON.stringify(file),
+          })
+          if (res.ok)
+            return await res.text()
+        })
+      )).filter(e => e)
+
+      const res = await fetch(`${API_URL}/projects/${toUpdate || ''}`, {
+        method: isEdit ? 'PATCH' : 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": `Bearer ${userToken}`
+        },
+        body: JSON.stringify({ ...values, images })
+      })
+      if (res.ok) {
+        toast.success('OK')
+      } else {
+        toast.error('KO')
+      }
     },
   })
 
   const addFile = async (e) => {
     Array.from(e.target.files).map(async file => {
-      console.log(file)
       return await new Promise(() => {
         const reader = new FileReader()
 
@@ -87,21 +121,25 @@ const CreateProject = () => {
   }
 
   const removeFile = (fileName) => {
-    setFiles(old => old.filter(file => file.name !== fileName))
+    setFiles(old => old.filter(file => {
+      if (file.name)
+        return file.name !== fileName
+      return file !== fileName
+    }))
   }
 
   return (
     <div>
-      <h1 className="font-bold text-3xl mb-5 text-center">Créer un projet</h1>
+      <h1 className="font-bold text-3xl mb-5 text-center">{isEdit ? 'Modifier un projet' : 'Créer un projet'}</h1>
       <form onSubmit={formik.handleSubmit} className="grid gap-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left column */}
           <div className="grid gap-4">
-            <Input label="Nom" name="name" onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Is this ponpon ?" />
-            <Input label="Description courte" name="shortDescription" onChange={formik.handleChange} onBlur={formik.handleBlur} as="textarea" rows={3} placeholder="UwU" />
-            <Input label="XP" name="xp" type="number" onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="42" />
+            <Input label="Nom" name="name" onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Is this ponpon ?" value={formik.values.name} />
+            <Input label="Description courte" name="shortDescription" onChange={formik.handleChange} onBlur={formik.handleBlur} as="textarea" rows={3} placeholder="UwU" value={formik.values.shortDescription} />
+            <Input label="XP" name="xp" type="number" onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="42" value={formik.values.xp} />
             <div className="flex flex-col gap-4">
-              <Input type="url" label="Lien du dossier Github" name="github" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://github.com/..." />
+              <Input type="url" label="Lien du dossier Github" name="github" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://github.com/..." value={formik.values.github} />
               {/* <Input type="url" label="Lien intranet" name="intra" onChange={formik.handleChange} onBlur={formik.handleBlur} LeftIcon={GlobeAltIcon} placeholder="https://intra.epitech.eu/..." /> */}
             </div>
             <div>
@@ -113,6 +151,7 @@ const CreateProject = () => {
                 roles={roles}
                 me={me}
                 onChange={(value) => formik.setFieldValue("members", value)}
+                initialValues={projectData.members}
               />
             </div>
           </div>
@@ -146,11 +185,11 @@ const CreateProject = () => {
               </div>
               <div className="flex overflow-x-auto gap-2 mt-2">
                 {files.map(file => (
-                  <div className="group relative flex-shrink-0" key={file.name}>
-                    <button type="button" onClick={() => removeFile(file.name)} className="hidden group-hover:block absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 p-2 rounded-full bg-white z-10">
+                  <div className="group relative flex-shrink-0" key={file.name ? file.name : file}>
+                    <button type="button" onClick={() => removeFile(file.name || file)} className="hidden group-hover:block absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 p-2 rounded-full bg-white z-10">
                       <TrashIcon className="h-4 aspect-1 text-red-500" />
                     </button>
-                    <img src={file.content} alt="" className="h-24 aspect-[3/2] object-cover shadow-md group-hover:blur-sm" />
+                    <img src={file.name ? file.content : `${API_URL}/public/${file}`} alt="" className="h-24 aspect-[3/2] object-cover shadow-md group-hover:blur-sm" />
                   </div>
                 ))}
                 <div className="h-24 w-0 bg-transparent select-none"></div>
