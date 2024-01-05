@@ -12,6 +12,7 @@
         "@tailwindcss/line-clamp": "^0.4.4",
         "@tailwindcss/typography": "^0.5.10",
         "bootstrap": "^5.2.1",
+        "dayjs": "^1.11.10",
         "formik": "^2.4.5",
         "html-to-md": "^0.8.4",
         "react": "^18.2.0",
