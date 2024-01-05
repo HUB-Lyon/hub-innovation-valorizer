@@ -18,4 +18,4 @@ const roles = [
   {"id": 16, "label": "Maintenance des systèmes d'exploitation"}
 ]
 
-export default roles
+export default roles;

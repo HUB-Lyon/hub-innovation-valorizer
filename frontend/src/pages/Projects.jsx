@@ -33,7 +33,7 @@ const Projects = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {projects.map(project => {
           return (
-            <a key={project.id} href={`/projects/${project._id}`} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow hover:scale-105 hover:shadow-lg transition duration-200">
+            <a key={project._id} href={`/projects/${project._id}`} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow hover:scale-105 hover:shadow-lg transition duration-200">
               <img className="rounded-t-lg w-full aspect-[3/2] object-cover" src={
                 project.images[0]
                 ? `${API_URL}/public/${project.images[0]}`

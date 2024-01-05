@@ -15,6 +15,7 @@ import InventoryPicker from "../components/InventoryPicker";
 import { API_URL } from "../constants";
 import toast from "react-hot-toast";
 import roles from "../roles";
+import html2md from "html-to-md";
 
 const CreateProject = ({
   isEdit = false,
@@ -80,6 +81,7 @@ const CreateProject = ({
       ...projectData
     },
     onSubmit: async (values) => {
+      values.description = html2md(values.description)
       const images = (await Promise.all(
         files.map(async file => {
           if (!file.name)
