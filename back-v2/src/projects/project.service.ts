@@ -8,8 +8,8 @@ import { Project } from './schema/project.schema';
 import { Model } from 'mongoose';
 import {
   CreateProjectDTO,
-  Status,
   UpdateProjectDTO,
+  UpdateStatusDTO,
 } from './schema/project.inputs';
 import { HIVUser } from 'src/users/schema/user.interface';
 
@@ -46,21 +46,27 @@ export class ProjectService {
 
   async updateStatus(
     id: string,
-    status: Status,
+    data: UpdateStatusDTO,
     user: HIVUser,
   ): Promise<Project> {
     const project = await this.projectModel.findById(id).exec();
     if (!project) throw new NotFoundException();
 
-    this.projectModel.findByIdAndUpdate(id, {
-      $set: {
-        status,
-        statusUpdatedBy: user.email,
-        statusUpdatedAt: +new Date(),
-      },
-    });
-
-    return null;
+    return await this.projectModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: {
+            status: data.status,
+            refusedBecause:
+              data.status === 'REFUSED' ? data.refusedBecause : null,
+            statusUpdatedBy: user.email,
+            statusUpdatedAt: +new Date(),
+          },
+        },
+        { new: true },
+      )
+      .exec();
   }
 
   async updateById(

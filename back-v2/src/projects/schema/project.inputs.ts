@@ -33,8 +33,9 @@ export interface UpdateProjectDTO {
   // TODO materials?: Array<MaterialNeeded>;
 }
 
-export type Status = 'REFUSED' | 'VALIDATED' | 'DONE' | 'DISMOUNTED';
+export type Status = 'PENDING' | 'REFUSED' | 'VALIDATED' | 'DONE';
 
 export interface UpdateStatusDTO {
   status: Status;
+  refusedBecause: string | null;
 }

@@ -39,6 +39,9 @@ export class Project extends Document {
   @Prop()
   status: Status;
 
+  @Prop({ default: null })
+  refusedBecause: string;
+
   @Prop()
   statusUpdatedBy: string;
 

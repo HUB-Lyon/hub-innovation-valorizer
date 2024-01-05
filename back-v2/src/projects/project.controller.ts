@@ -37,13 +37,13 @@ export class ProjectController {
     return await this.projectSerivce.create(data, user);
   }
 
-  @Post('/update-status/:id')
+  @Patch('/update-status/:id')
   async updateStatusById(
     @Param('id') id: string,
     @Body() data: UpdateStatusDTO,
     @User() user: HIVUser,
   ) {
-    return await this.projectSerivce.updateStatus(id, data.status, user);
+    return await this.projectSerivce.updateStatus(id, data, user);
   }
 
   @Patch('/:id')
